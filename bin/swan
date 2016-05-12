@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+require 'swan'
+require 'optparse'
+require 'yaml'
+require 'open-uri'
+
+options = {
+  init: false,
+  init_params: '',
+  only: [],
+  config: '.swan.yml',
+}
+
+# Parse options
+OptionParser.new do |opts|
+  opts.banner = 'Usage: swan [options]'
+
+  opts.on('--init', 'Initialize swan config file') do |v|
+    options[:init] = true
+  end
+
+  opts.on('-c', '--config config', 'Configuration file to use') do |c|
+    options[:config] = c
+    options[:init_params] = " -c #{c}"
+  end
+
+  opts.on('--only only', 'Comma-separated list of files, download only them') do |only|
+    options[:only] = only.split(',')
+  end
+
+  opts.on('-h', '--help', 'Show this help message') do
+    puts opts
+    exit
+  end
+end.parse!
+
+swan = Swan::Downloader.new
+
+if options[:init]
+  # Create new config file
+  # Ask user to override if exists
+  swan.init(options[:config])
+else
+  # Read config file
+  begin
+    files = YAML.load_file(options[:config])
+  rescue
+    puts "Can not find #{options[:config]} file. Please run `swan --init#{options[:init_params]}` to create it or choose another file."
+    exit
+  end
+
+  unless files
+    puts 'Nothing to download.'
+    exit
+  end
+
+  swan.download(files, options)
+end

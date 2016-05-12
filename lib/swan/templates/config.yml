@@ -1,0 +1,36 @@
+# Specify files to be downloaded in this file
+#
+# rubocop:
+#   url: 'http://example.com/.rubocop.yml'
+#   filename: '.rubocop.yml'
+#   dir: '.'
+#
+# Root level elements are key names, which can be referenced in command line if needed.
+#
+# url - location of the file to be downloaded. Can be local (relative or absolute) or remote.
+# save_to - filename to save file to. If not specified, root name will be used.
+# dir - where to save file. Current directory by default.
+#
+# rubocop1:
+#   url: 'http://example.com/rubocop.yml'
+#   filename: '.rubocop.yml'
+#   dir: './app'
+#
+# Will download to ./app/.rubocop.yml
+#
+# rubocop2:
+#   url: 'http://example.com/rubocop.yml'
+#   filename: '.rubocop.yml'
+#
+# Will download to ./.rubocop.yml
+#
+# .rubocop.yaml:
+#   url: 'http://example.com/rubocop.yml'
+#
+# Will download to ./.rubocop.yaml
+#
+# Simplest example:
+#
+# .rubocop.yml: 'http://example.com/my_rubocop.yml'
+#
+# Will download to ./.rubocop.yml
